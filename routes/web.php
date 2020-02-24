@@ -52,7 +52,7 @@ Route::get('relasi-4', function () {
 });
 Route::get('relasi-5', function () {
     // mamilih data hobi yang memiliki nama 'game Mobile' 
-    $hobi = Hobi::where('hobi','=','game Mobile')->first();
+    $hobi = Hobi::where('hobi','=','Mengaji Al Quran')->first();
     // menampilkan seluruh data mahasiswa yang memiliki hobi game Mobile
     foreach ($hobi->mahasiswa as $value) {
         echo '<li>Nama : '.$value->nama
@@ -68,4 +68,8 @@ Route::get('relasi-join', function () {
 Route::get('eloquent', function () {
     $mahasiswa = Mahasiswa::with('wali','dosen','hobi')->get();
     return view('eloquent',compact('mahasiswa'));
+});
+Route::get('latihan-eloquent', function () {
+    $mahasiswa = Mahasiswa::with('wali','dosen','hobi')->get()->take(1);
+    return view('latihaneloquent',compact('mahasiswa'));
 });
