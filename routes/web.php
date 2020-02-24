@@ -59,3 +59,13 @@ Route::get('relasi-5', function () {
             .'<strong> '.$value->nim.'</strong></li>';
     }
 });
+Route::get('relasi-join', function () {
+//    join laravel
+//  $sql = Mahasiswa::with('wali')->get();
+    $sql = DB::table('mahasiswas')->select('mahasiswas.nama','mahasiswas.nim','walis.nama as nama_wali')->join('walis','walis.id_mahasiswa','=','mahasiswas.id')->get();
+    dd($sql);
+});
+Route::get('eloquent', function () {
+    $mahasiswa = Mahasiswa::with('wali','dosen','hobi')->get();
+    return view('eloquent',compact('mahasiswa'));
+});
