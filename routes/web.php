@@ -14,6 +14,18 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// blade template
+Route::get('beranda', function () {
+    return view('beranda');
+});
+Route::get('kontak', function () {
+    return view('kontak');
+});
+Route::get('tentang', function () {
+    return view('tentang');
+});
+
 // input MOdel
 use App\Mahasiswa;
 use App\Dosen;
@@ -70,6 +82,13 @@ Route::get('eloquent', function () {
     return view('eloquent',compact('mahasiswa'));
 });
 Route::get('latihan-eloquent', function () {
-    $mahasiswa = Mahasiswa::with('wali','dosen','hobi')->get()->take(1);
+    $mahasiswa = Mahasiswa::with('wali','dosen','hobi')->where('nama','=','Mamat Karbit')->first();
     return view('latihaneloquent',compact('mahasiswa'));
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+//  CRUD
+Route::resource('dosen','DosenController');
