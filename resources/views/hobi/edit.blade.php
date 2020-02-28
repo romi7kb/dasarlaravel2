@@ -5,20 +5,16 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                    Ubah Data Dosen
+                    Ubah Data hobi
                 </div>
                 <div class="card-body">
-                    <form action="{{route('dosen.update',$dosen->id)}}" method="post">
+                    <form action="{{route('hobi.update',$hobi->id)}}" method="post">
                         @csrf
                         <!-- <input type="hidden" name="_method" value="PUT"> -->
                         @method('PUT')
                         <div class="form-group">
-                            <label for="">Nama Dosen</label>
-                            <input type="text" name="nama" id="" class="form-control" value="{{$dosen->nama}}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Nomor Induk Pegawai Dosen</label>
-                            <input type="text" name="nipd" id="" class="form-control" value="{{$dosen->nipd}}" required>
+                            <label for="">Nama hobi</label>
+                            <input type="text" name="nama" id="" class="form-control" value="{{$hobi->hobi}}" required>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">ubah</button>

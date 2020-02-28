@@ -5,19 +5,16 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                    Data Dosen
+                    Data hobi
                 </div>
                 <div class="card-body">
-                    <form action="{{route('dosen.store')}}" method="post">
+                    <form action="{{route('hobi.store')}}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="">Nama Dosen</label>
-                            <input type="text" name="nama" id="" class="form-control" value="{{$dosen->nama}}" readonly>
+                            <label for="">Nama hobi</label>
+                            <input type="text" name="hobi" id="" class="form-control" value="{{$hobi->hobi}}" readonly>
                         </div>
-                        <div class="form-group">
-                            <label for="">Nomor Induk Pegawai Dosen</label>
-                            <input type="text" name="nipd" id="" class="form-control" value="{{$dosen->nipd}}" readonly>
-                        </div>
+
                         <div class="form-group">
                             <a href="{{url()->previous()}}" class="btn btn-primary">kembali</a>
                         </div>

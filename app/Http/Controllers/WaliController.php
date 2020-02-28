@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Wali;
+use App\Mahasiswa;
 use Illuminate\Http\Request;
 
 class WaliController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,8 @@ class WaliController extends Controller
      */
     public function index()
     {
-        //
+        $wali = Wali::with('mahasiswa')->get();
+        return view('wali.index',compact('wali'));
     }
 
     /**
@@ -23,8 +29,9 @@ class WaliController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    { 
+        $mhs = Mahasiswa::all();
+        return view('wali.create', compact('mhs'));
     }
 
     /**
@@ -35,51 +42,63 @@ class WaliController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $wali =new Wali();
+        $wali->nama = $request->nama;
+        $wali->id_mahasiswa = $request->id_mahasiswa;
+        $wali->save();
+        return redirect()->route('wali.index')->with(['message'=>'Data Berhasil Ditambah']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Wali  $wali
+     * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Wali $wali)
+    public function show( $id)
     {
-        //
+        $wali = Wali::findOrFail($id);
+        return view('wali.show',compact('wali'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Wali  $wali
+     * @param  \App\Wali  $Wali
      * @return \Illuminate\Http\Response
      */
-    public function edit(Wali $wali)
+    public function edit($id)
     {
-        //
+        $wali = Wali::findOrFail($id);
+        $mhs = Mahasiswa::all();
+        return view('wali.edit',compact('wali','mhs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Wali  $wali
+     * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Wali $wali)
+    public function update(Request $request, $id)
     {
-        //
+        $wali = Wali::findOrFail($id);
+        $wali->nama = $request->nama;
+        $wali->id_mahasiswa = $request->id_mahasiswa;
+        $wali->save();
+        return redirect()->route('wali.index')->with(['message'=>'Data Berhasil Diedit']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Wali  $wali
+     * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Wali $wali)
+    public function destroy($id)
     {
-        //
+        $wali = Wali::findOrFail($id)->delete();
+        return redirect()->route('wali.index')->with(['message'=>'Data Berhasil Dihapus']);
     }
 }

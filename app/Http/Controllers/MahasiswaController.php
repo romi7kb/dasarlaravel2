@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Mahasiswa;
+use App\Dosen;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,8 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        //
+        $mhs = Mahasiswa::with('dosen')->get();
+        return view('mahasiswa.index',compact('mhs'));
     }
 
     /**
@@ -23,8 +29,9 @@ class MahasiswaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    { 
+        $dosen = Dosen::all();
+        return view('mahasiswa.create', compact('dosen'));
     }
 
     /**
@@ -35,7 +42,12 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mhs =new Mahasiswa();
+        $mhs->nama = $request->nama;
+        $mhs->nim = $request->nim;
+        $mhs->id_dosen = $request->id_dosen;
+        $mhs->save();
+        return redirect()->route('mahasiswa.index')->with(['message'=>'Data Berhasil Ditambah']);
     }
 
     /**
@@ -44,9 +56,10 @@ class MahasiswaController extends Controller
      * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Mahasiswa $mahasiswa)
+    public function show( $id)
     {
-        //
+        $mhs = mahasiswa::findOrFail($id);
+        return view('mahasiswa.show',compact('mhs'));
     }
 
     /**
@@ -55,9 +68,11 @@ class MahasiswaController extends Controller
      * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mahasiswa $mahasiswa)
+    public function edit( $id)
     {
-        //
+        $mhs = mahasiswa::findOrFail($id);
+        $dosen = Dosen::all();
+        return view('mahasiswa.edit',compact('mhs','dosen'));
     }
 
     /**
@@ -67,9 +82,14 @@ class MahasiswaController extends Controller
      * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mahasiswa $mahasiswa)
+    public function update(Request $request, $id)
     {
-        //
+        $mhs = mahasiswa::findOrFail($id);
+        $mhs->nama = $request->nama;
+        $mhs->nim = $request->nim;
+        $mhs->id_dosen = $request->id_dosen;
+        $mhs->save();
+        return redirect()->route('mahasiswa.index')->with(['message'=>'Data Berhasil Diedit']);
     }
 
     /**
@@ -78,8 +98,9 @@ class MahasiswaController extends Controller
      * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mahasiswa $mahasiswa)
+    public function destroy($id)
     {
-        //
+        $mhs = mahasiswa::findOrFail($id)->delete();
+        return redirect()->route('mahasiswa.index')->with(['message'=>'Data Berhasil Dihapus']);
     }
 }
